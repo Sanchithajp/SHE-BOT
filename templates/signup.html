@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirja | Admin Signup</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FAE6FA; /* Light purple background */
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            color: #6A0572;
+        }
+    
+        .login-container {
+            background-color: #CDA4DE; /* Soft purple background */
+            color: white;
+            width: 24rem;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    
+        .login-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+    
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        label {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #FFF0F5;
+            font-size: 1rem;
+            color: black;
+            box-sizing: border-box;
+        }
+    
+        input:focus {
+            outline: none;
+            border-color: #6A0572;
+            box-shadow: 0 0 0 3px rgba(106, 5, 114, 0.3);
+        }
+    
+        button {
+            background-color: #6A0572; /* Dark purple button */
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover {
+            background-color: #4A0354; /* Darker purple on hover */
+        }
+    
+        .signup {
+            margin-top: 1rem;
+        }
+    
+        .signup a {
+            color: #6A0572;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    
+        .signup a:hover {
+            text-decoration: underline;
+        }
+        </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="/signup" method="POST"></form>
+            <label for="username">
+                <span>Name</span>
+                <input type="text" placeholder="Enter your name" id="Nmae" name="Name" required>
+            </label>
+
+            <label for="username">
+                <span>Username</span>
+                <input type="text" placeholder="Enter your email" id="email" name="email" required>
+            </label>
+
+            <label for="password">
+                <span>Password</span>
+                <input type="password" placeholder="Enter your password" id="password" name="password" required>
+            </label>
+
+            <button type="submit">Signup</button>
+        </form>
+    </div>
+    <p class="signup"><a href="login.html">Have an account? Login</a></p>
+</body>
+</html>

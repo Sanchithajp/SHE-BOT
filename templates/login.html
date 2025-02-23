@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHEbot - Login</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #FAE6FA; /* Pale Lilac */
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            color: #6A0572; /* Deep Plum */
+        }
+
+        .login-container {
+            background-color: #CDA4DE; /* Soft Lavender */
+            color: white;
+            width: 24rem;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-family: "Playfair Display", serif;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
+            color: black;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6A0572;
+            box-shadow: 0 0 0 3px rgba(106, 5, 114, 0.3);
+        }
+
+        button {
+            font-family: "Poppins", sans-serif;
+            background-color: #F8C8DC; /* Blush Pink */
+            color: #6A0572;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #CDA4DE; /* Soft Lavender */
+        }
+
+        .signup {
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        .signup a {
+            color: #6A0572;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <!-- Include CSRF token for security -->
+        <form action="/login" method="POST">
+            <label for="email">
+                <span>Email:</span>
+                <input type="email" placeholder="Enter your email" id="email" name="email" required>
+            </label>
+
+            <label for="password">
+                <span>Password:</span>
+                <input type="password" placeholder="Enter your password" id="password" name="password" required>
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <p class="signup"><a href="signup.html">Don't have an account? Sign-up</a></p>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Incident</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            max-width: 650px;
+            margin-top: 40px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background: #fff;
+        }
+        h2 {
+            font-weight: 600;
+            color: #333;
+        }
+        label {
+            font-weight: 500;
+            color: #555;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+        }
+        #map {
+            height: 300px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .btn-primary {
+            background: #007bff;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2 class="text-center mb-4"><i class="fas fa-exclamation-triangle"></i> Report an Incident</h2>
+
+        <form id="incidentForm">
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-user"></i> Name (Leave blank for anonymity)</label>
+                <input type="text" class="form-control" id="name" placeholder="Your Name">
+            </div>
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-phone"></i> Phone Number</label>
+                <input type="text" class="form-control" id="phone" placeholder="Your Phone Number">
+            </div>
+
+            <!-- Search Location -->
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-map-marker-alt"></i> Search Location</label>
+                <input type="text" class="form-control" id="locationSearch" placeholder="Type a location..." autocomplete="off">
+            </div>
+
+            <!-- Map -->
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-map"></i> Select Location on Map</label>
+                <div id="map"></div>
+                <input type="text" class="form-control mt-2" id="location" placeholder="Latitude, Longitude" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-clock"></i> Time of Incident</label>
+                <input type="datetime-local" class="form-control" id="time">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-exclamation-circle"></i> Type of Incident</label>
+                <select class="form-select" id="incidentType">
+                    <option>Harassment</option>
+                    <option>Assault</option>
+                    <option>Theft</option>
+                    <option>Stalking</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label"><i class="fas fa-info-circle"></i> Incident Details</label>
+                <textarea class="form-control" id="details" rows="3" placeholder="Describe the incident..."></textarea>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="anonymous">
+                <label class="form-check-label" for="anonymous">Report Anonymously</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-paper-plane"></i> Submit Report</button>
+        </form>
+    </div>
+</div>
+
+<!-- Leaflet.js -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // Initialize Map
+    var map = L.map('map').setView([28.7041, 77.1025], 12);  // Default: Delhi
+
+    // Load OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Marker
+    var marker = L.marker([28.7041, 77.1025], { draggable: true }).addTo(map)
+        .bindPopup("Drag me or search a location").openPopup();
+
+    // Update location field when marker moves
+    marker.on('dragend', function(e) {
+        var latlng = marker.getLatLng();
+        document.getElementById('location').value = latlng.lat + ", " + latlng.lng;
+    });
+
+    // Function to search location and move marker
+    function searchLocation() {
+        var query = document.getElementById('locationSearch').value;
+        if (query.trim() === "") return;
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    var lat = data[0].lat;
+                    var lon = data[0].lon;
+                    map.setView([lat, lon], 14);
+                    marker.setLatLng([lat, lon]).bindPopup(query).openPopup();
+                    document.getElementById('location').value = lat + ", " + lon;
+                } else {
+                    alert("Location not found! Try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching location:", error);
+                alert("Failed to fetch location. Please check your internet connection.");
+            });
+    }
+
+    // Listen for 'Enter' in search box
+    document.getElementById('locationSearch').addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchLocation();
+        }
+    });
+
+    // Form Submit Event
+    document.getElementById('incidentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const reportData = {
+            name: document.getElementById('anonymous').checked ? null : document.getElementById('name').value,
+            phone: document.getElementById('anonymous').checked ? null : document.getElementById('phone').value,
+            location: document.getElementById('location').value,
+            time: document.getElementById('time').value,
+            incidentType: document.getElementById('incidentType').value,
+            details: document.getElementById('details').value,
+            anonymous: document.getElementById('anonymous').checked
+        };
+
+        console.log("Submitting Data:", reportData);  // Debugging log
+
+        fetch('http://127.0.0.1:5000/report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reportData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Server Response:", data);  // Debugging log
+            alert(data.message);
+            document.getElementById('incidentForm').reset();
+        })
+        .catch(error => {
+            console.error("Error submitting report:", error);
+            alert("Failed to submit report. Please try again.");
+        });
+    });
+</script>
+
+
+</body>
+</html>

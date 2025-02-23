@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirja.gov.in</title>
+    <style>
+        /* General Styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: "Playfair Display", serif;
+            background-color: #FAE6FA;
+            color: #6A0572;
+        }
+
+        /* Navbar 1 */
+        .navbar1 {
+            background-color: #CDA4DE;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            z-index: 10;
+            font-family: "Playfair Display", serif;
+        }
+
+        .navbar1 h1 {
+            font-size: 24px;
+        }
+
+        .login-btn, .signup-btn {
+            background-color: #F8C8DC;
+            color: #6A0572;
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 2px solid #FFF0F5;
+            font-family: "Poppins", sans-serif;
+            font-weight: bold;
+            gap:15px;
+        }
+
+        /* Navbar 2 */
+        .navbar2 {
+            background-color: #FFF0F5;
+            color: #6A0572;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-weight: bold;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .nav-items li {
+            cursor: pointer;
+            list-style-type: none;
+        }
+
+        .nav-items a {
+            color: #6A0572;
+            text-decoration: none;
+        }
+
+        .nav-items li:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 24px;
+            flex-grow: 1;
+        }
+
+        .content h1 {
+            color: #6A0572;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .content h3 {
+            color: #CDA4DE;
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+
+        .content p {
+            font-size: 18px;
+        }
+
+        /* Buttons */
+        .download {
+            display: flex;
+            margin-left: 130px;
+            gap: 16px;
+        }
+
+        #btn1, #btn2 {
+            background-color: #CDA4DE;
+            color: #6A0572;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 3px solid #FFF0F5;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* Home Icon */
+        .home-icon {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 75px;
+            height: 75px;
+            background-color: #F8C8DC;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .home-icon i {
+            color: white;
+            font-size: 40px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #CDA4DE;
+            color: white;
+            text-align: center;
+            width: 100%;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        .image-container {
+    width: 100%;  /* Makes it responsive */
+    display: flex;
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically (if parent has height) */
+    margin-top: 20px;
+}
+
+.image-container img {
+    max-width: 80%; /* Prevents overflow */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 10px; /* Adds smooth corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for a modern look */
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar1">
+        <h1>SHE-BOT</h1>
+        <a href="http://127.0.0.1:5000/" class="login-btn">Admin login</a>
+        <a href="signup.html" class="signup-btn">Signup</a>
+    </div>
+
+    <div class="navbar2">
+        <ul class="nav-items">
+            <li><a href="awarenessPage.html">Awareness Page</a></li>
+            <li><a href="victim.html">Victim Stories</a></li>
+            <li><a href="grievances.html">Write your story</a></li>
+            <li><a href="community.html">Communities</a></li>
+            <li><a href="geolocation-tracker.html">Location</a></li>
+            <li><a href="admin-grievances.html">Admin</a></li>
+            <li><a href="reporting_incidents.html">Report</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>SHE-BOT</h1>
+        <h3>“Not today, creeps!🚫</h3>
+        <p>SHE-Bot is a dedicated platform designed to empower individuals, spread awareness, and provide a safe space for those affected by human trafficking and gender-based violence. Our mission is to support victims, amplify their voices, and connect them with the necessary resources for justice and healing. With features like real-time geolocation tracking, incident reporting, and a supportive community, SHE-Bot stands as a beacon of hope and resilience. Join us in creating a safer, more just world—because every story matters, and every voice deserves to be heard. 💜✨</p>
+        
+    </div>
+
+    <div class="image-container">
+        <a><img src='img1.jpg' border='0' alt='picture'/></a>
+    </div>
+    <script>
+        (function(){
+            if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+                window.chatbase = (...args) => {
+                    if (!window.chatbase.q) {
+                        window.chatbase.q = [];
+                    }
+                    window.chatbase.q.push(args);
+                };
+                window.chatbase = new Proxy(window.chatbase, {
+                    get(target, prop) {
+                        if (prop === "q") {
+                            return target.q;
+                        }
+                        return (...args) => target(prop, ...args);
+                    }
+                });
+            }
+
+            const onLoad = function() {
+                const script = document.createElement("script");
+                script.src = "https://www.chatbase.co/embed.min.js";
+                script.id = "8wn0guXXgdvP5wjPMDL6x";  /* Replace with your actual Chatbase Bot ID */
+                script.domain = "www.chatbase.co";
+                document.body.appendChild(script);
+            };
+
+            if (document.readyState === "complete") {
+                onLoad();
+            } else {
+                window.addEventListener("load", onLoad);
+            }
+        })();
+    </script>
+
+
+    
+
+    <footer class="footer">
+        <p>Reach us via:</p>
+        <ul class="contact-info">
+            <li>Mob: 9900887654</li>
+            <li>Tel: 2022987651</li>
+            <li>E-mail: nirja.raksha@nirja.com</li>
+        </ul>
+    </footer>
+</body>
+</html>

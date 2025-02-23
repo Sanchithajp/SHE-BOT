@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Reports</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Incident Reports</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Location</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody id="reportTable">
+            <!-- Reports will be inserted here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("http://127.0.0.1:5000/reports")
+    .then(response => response.json())
+    .then(data => {
+        let tableBody = document.getElementById("reportTable");
+        data.forEach(report => {
+            let row = `
+                <tr>
+                    <td>${report.id}</td>
+                    <td>${report.anonymous ? "Anonymous" : report.name}</td>
+                    <td>${report.anonymous ? "Hidden" : report.phone}</td>
+                    <td>${report.location}</td>
+                    <td>${report.time}</td>
+                    <td>${report.incident_type}</td>
+                    <td>${report.details}</td>
+                </tr>`;
+            tableBody.innerHTML += row;
+        });
+    })
+    .catch(error => console.error("Error fetching reports:", error));
+});
+</script>
+
+</body>
+</html>

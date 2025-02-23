@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: "Inter", sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #F8F9FA;
+        }
+        .navbar {
+            background-color: #1D3557;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        #map {
+            flex-grow: 1;
+            width: 100%;
+            height: 90vh;
+        }
+        #shareLocation {
+            background-color: #E76F51;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #shareLocation:hover {
+            background-color: #d9534f;
+        }
+        /* Floating SOS Button */
+        .sos-button {
+            background-color: red;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .sos-button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Nirja - Geolocation Tracker</h1>
+        <button id="shareLocation">Share My Location</button>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([19.075984, 72.877656], 10);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // User location tracking
+        var userMarker = L.marker([0, 0]).addTo(map).bindPopup("Your Location");
+
+        function updateUserLocation(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            userMarker.setLatLng([lat, lng]).openPopup();
+            map.setView([lat, lng], 13);
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(updateUserLocation, console.error, { enableHighAccuracy: true });
+        }
+
+        // Share location button
+        document.getElementById("shareLocation").addEventListener("click", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var shareUrl = `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        alert("Location link copied! Share with your trusted contact.");
+                    });
+                });
+            }
+        });
+
+        // Floating SOS Button on Map
+        var sosControl = L.control({ position: 'bottomright' });
+
+        sosControl.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+            var button = L.DomUtil.create('button', 'sos-button', div);
+            button.innerHTML = "SOS";
+            button.onclick = function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+                        var emergencyNumber = "tel:112"; // Change to local emergency number if needed
+                        var message = `🚨 SOS Alert! I need help. My location: https://www.google.com/maps?q=${lat},${lng}`;
+                        
+                        // Show alert before calling
+                        var confirmSOS = confirm("🚨 Emergency Alert!\n\nCalling authorities now. Do you want to share your location with someone?");
+                        
+                        if (confirmSOS) {
+                            // Open WhatsApp in a new tab
+                            var whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+                            window.open(whatsappUrl, "_blank");
+
+                            // Delay before calling so user can see the message
+                            setTimeout(() => {
+                                window.location.href = emergencyNumber;
+                            }, 3000); // 3 seconds delay
+                        } else {
+                            alert("SOS call canceled.");
+                        }
+                    });
+                }
+            };
+            return div;
+        };
+
+        sosControl.addTo(map); // Add the SOS button to the map
+
+        // Heatmap Layer
+        var sosData = JSON.parse('{{ sos_data|safe }}'); // Ensure Django renders this correctly
+        var heatmapPoints = sosData.map(item => [parseFloat(item.fields.latitude), parseFloat(item.fields.longitude), 1]);
+        
+        var heat = L.heatLayer(heatmapPoints, { radius: 25, blur: 15, maxZoom: 17 }).addTo(map);
+    </script>
+    
+</body>
+</html>
