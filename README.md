@@ -28,8 +28,8 @@ No special installation is required. Simply download and open the `index.html` f
 
 ## Contact
 For any queries or support, reach out to us:
-- **Email**: nirja.raksha@nirja.com
-- **Phone**: 9900887654
+- **Email**: sanchu15j@gmail.com
+- **Phone**: 9019533390
 - **Website**: [Coming Soon]
 
 ---
